@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nursing and Teaching Skills Quiz - True/False</title>
+    <style>
+        body {
+            font-family: 'Arial', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        .quiz-container {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            max-width: 900px; /* Increased max-width */
+            width: 100%;
+            direction: ltr; /* Left-to-right for English */
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            transition: border 0.3s ease; /* Smooth transition for border */
+            min-height: 120px; /* Ensure enough height for questions */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Distribute content */
+        }
+        .question-block h3 {
+            color: #34495e;
+            margin-top: 0;
+            font-size: 1.3em;
+            line-height: 1.5;
+            flex-grow: 1; /* Allow heading to take available space */
+        }
+        .options {
+            margin-top: 15px; /* Add some space above options */
+        }
+        .options label {
+            display: block;
+            margin-bottom: 12px;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+            font-size: 1.1em;
+            color: #555;
+            background-color: #fdfdfd;
+            border: 1px solid #e0e0e0;
+        }
+        .options label:hover {
+            background-color: #e9eff1;
+        }
+        .options input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px 25px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.4em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 30px;
+        }
+        .submit-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        .feedback {
+            margin-top: 10px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .correct-label {
+            background-color: #d4edda !important;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .incorrect-label {
+            background-color: #f8d7da !important;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .result-section {
+            margin-top: 30px;
+            padding: 25px;
+            background-color: #e8f5e9;
+            border-radius: 10px;
+            border: 1px solid #c8e6c9;
+            text-align: center;
+            font-size: 1.6em;
+            color: #2e7d32;
+            font-weight: bold;
+            display: none;
+        }
+        .unanswered-question {
+            border: 2px solid #e74c3c !important; /* Red border for unanswered */
+        }
+        .validation-message {
+            color: #e74c3c;
+            font-size: 0.95em;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Nursing and Teaching Skills Quiz - True/False</h1>
+
+        <form id="quizForm">
+            </form>
+
+        <div class="result-section" id="results"></div>
+
+    </div>
+
+    <script>
+        const allQuestions = [
+            // True Questions
+            {
+                id: 'q1',
+                text: 'Technology advances require nurses to have updated information to deal with it.',
+                answer: 'T'
+            },
+            {
+                id: 'q2',
+                text: 'Technology enhances diagnosis and management of patients.',
+                answer: 'T'
+            },
+            {
+                id: 'q3',
+                text: 'Social determinants of health, such as income and education, impact health outcomes and access to care.',
+                answer: 'T'
+            },
+            {
+                id: 'q4',
+                text: 'Policy analysis and Reform Strategies is one of the healthcare components.',
+                answer: 'T'
+            },
+            {
+                id: 'q5',
+                text: 'Florence Nightingale emphasized hygiene, sanitation, and systematic patient care during the Crimean War.',
+                answer: 'T'
+            },
+            {
+                id: 'q6',
+                text: 'Technology integration became integral to nursing practice.',
+                answer: 'T'
+            },
+            {
+                id: 'q7',
+                text: 'Electronic Health Records (EHR) can improve communication between healthcare providers.',
+                answer: 'T'
+            },
+            {
+                id: 'q8',
+                text: 'Clinical Decision Support Systems (CDSS) provide nurses with evidence-based guidelines to aid in patient care.',
+                answer: 'T'
+            },
+            {
+                id: 'q9',
+                text: 'Mobile health applications can help patients manage their health independently.',
+                answer: 'T'
+            },
+            {
+                id: 'q10',
+                text: 'Simulation technology is used in nursing education to enhance the development of clinical skills.',
+                answer: 'T'
+            },
+            {
+                id: 'q11',
+                text: 'The Healthcare Information and Management Systems Society (HIMSS) focuses on advancing health through technology.',
+                answer: 'T'
+            },
+            {
+                id: 'q12',
+                text: 'Nurses are expected to be proficient in using technology when entering the workforce.',
+                answer: 'T'
+            },
+            {
+                id: 'q13',
+                text: 'Project-based learning methods are used to foster experiential learning in nursing education.',
+                answer: 'T'
+            },
+            {
+                id: 'q14',
+                text: 'Increased bandwidth and 3D content can improve access to learning for nursing students.',
+                answer: 'T'
+            },
+            {
+                id: 'q15',
+                text: 'Virtual patients provide an opportunity for nursing students to practice diagnosing medical problems without real patient interaction.',
+                answer: 'T'
+            },
+            {
+                id: 'q16',
+                text: 'Nurse educators are encouraged to embrace technology to provide a more contemporary curriculum.',
+                answer: 'T'
+            },
+            {
+                id: 'q17',
+                text: 'Duquesne University was a pioneer in offering online nursing education, introducing its first online Ph.D. in Nursing program in 1997.',
+                answer: 'T'
+            },
+            {
+                id: 'q18',
+                text: 'Systematic reviews are used to summarize findings from multiple studies addressing similar research questions in EBN.',
+                answer: 'T'
+            },
+            {
+                id: 'q19',
+                text: 'Lack of time and workload pressures are considered barriers to promoting Evidence-Based Practice in nursing.',
+                answer: 'T'
+            },
+            {
+                id: 'q20',
+                text: 'One key purpose of EBN is to reduce medical errors and adverse events.',
+                answer: 'T'
+            },
+            {
+                id: 'q21',
+                text: 'Self-regulation in Emotional Intelligence (EI) involves managing your emotions effectively, especially in stressful situations.',
+                answer: 'T'
+            },
+            {
+                id: 'q22',
+                text: 'AI helps in developing personalized treatment plans by analyzing patient-specific data.',
+                answer: 'T'
+            },
+            // False Questions
+            {
+                id: 'f1',
+                text: 'Technology in nursing education helps the instructor to assess a small number of students.',
+                answer: 'F'
+            },
+            {
+                id: 'f2',
+                text: 'Technology in nursing education decreases interactivity between the student and the learning.',
+                answer: 'F'
+            },
+            {
+                id: 'f3',
+                text: 'Technology decreases safety in hospitals.',
+                answer: 'F'
+            },
+            {
+                id: 'f4',
+                text: 'Healthcare quality is assurance that strategic policy frameworks exist as plans, policies, and law.',
+                answer: 'F'
+            },
+            {
+                id: 'f5',
+                text: 'Cost-effectiveness studies the financial aspects of healthcare as the economic burden of diseases.',
+                answer: 'F'
+            },
+            {
+                id: 'f6',
+                text: 'Technology and innovation increase costs in health organizations.',
+                answer: 'F'
+            },
+            {
+                id: 'f7',
+                text: 'The development of nursing theories by scholars like Jean Watson.',
+                answer: 'F'
+            },
+            {
+                id: 'f8',
+                text: 'Virginia Henderson provided frameworks for understanding nursing practice and patient care.',
+                answer: 'F'
+            },
+            {
+                id: 'f9',
+                text: 'Telehealth doesn’t need communication skills.',
+                answer: 'F'
+            },
+            {
+                id: 'f10',
+                text: 'Telehealth only allows for in-person consultations between nurses and patients.',
+                answer: 'F'
+            },
+            {
+                id: 'f11',
+                text: 'Data analytics in nursing is primarily used to complicate patient management.',
+                answer: 'F'
+            },
+            {
+                id: 'f12',
+                text: 'Interprofessional collaboration tools can hinder teamwork in healthcare settings.',
+                answer: 'F'
+            },
+            {
+                id: 'f13',
+                text: 'Technology in nursing practice has no impact on patient outcomes.',
+                answer: 'F'
+            },
+            {
+                id: 'f14',
+                text: 'Nurses do not need to be trained to use new technologies in their practice.',
+                answer: 'F'
+            },
+            {
+                id: 'f15',
+                text: 'The integration of technology in nursing education is likely to decrease after the COVID-19 pandemic.',
+                answer: 'F'
+            },
+            {
+                id: 'f16',
+                text: 'The only way to measure learning outcomes in nursing education is through traditional testing methods.',
+                answer: 'F'
+            },
+            {
+                id: 'f17',
+                text: 'Remote monitoring is irrelevant in telehealth practices for nurses.',
+                answer: 'F'
+            },
+            {
+                id: 'f18',
+                text: 'All nurse practitioner programs are required to include telehealth training in their curriculums.',
+                answer: 'F'
+            },
+            {
+                id: 'f19',
+                text: 'Evidence-Based Nursing only focuses on clinical expertise without the need for patient preferences or research evidence.',
+                answer: 'F'
+            },
+            {
+                id: 'f20',
+                text: 'Evidence-based practice guidelines are optional resources and not necessary for achieving quality healthcare delivery.',
+                answer: 'F'
+            },
+            {
+                id: 'f21',
+                text: 'High Emotional Intelligence (EI) has no impact on leadership abilities.',
+                answer: 'F'
+            },
+            {
+                id: 'f22',
+                text: 'AI eliminates all ethical concerns in healthcare, such as privacy and fairness.',
+                answer: 'F'
+            }
+        ];
+
+        // Function to shuffle an array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+            }
+            return array;
+        }
+
+        // Function to render questions
+        function renderQuestions() {
+            const quizForm = document.getElementById('quizForm');
+            quizForm.innerHTML = ''; // Clear existing questions
+
+            const shuffledQuestions = shuffleArray([...allQuestions]); // Create a shuffled copy
+
+            shuffledQuestions.forEach((q, index) => {
+                const questionBlock = document.createElement('div');
+                questionBlock.className = 'question-block';
+                questionBlock.id = `question-block-${q.id}`;
+
+                const questionText = document.createElement('h3');
+                questionText.textContent = `${index + 1}. ${q.text}`; // Use index for numbering
+
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options';
+
+                const labelTrue = document.createElement('label');
+                const inputTrue = document.createElement('input');
+                inputTrue.type = 'radio';
+                inputTrue.name = q.id;
+                inputTrue.value = 'T';
+                labelTrue.appendChild(inputTrue);
+                labelTrue.appendChild(document.createTextNode('True'));
+                // Event listener to clear message when an option is selected
+                inputTrue.addEventListener('change', () => clearValidationMessage(q.id));
+
+                const labelFalse = document.createElement('label');
+                const inputFalse = document.createElement('input');
+                inputFalse.type = 'radio';
+                inputFalse.name = q.id;
+                inputFalse.value = 'F';
+                labelFalse.appendChild(inputFalse);
+                labelFalse.appendChild(document.createTextNode('False'));
+                // Event listener to clear message when an option is selected
+                inputFalse.addEventListener('change', () => clearValidationMessage(q.id));
+
+                optionsDiv.appendChild(labelTrue);
+                optionsDiv.appendChild(labelFalse);
+
+                const validationMessage = document.createElement('div');
+                validationMessage.className = 'validation-message';
+                validationMessage.id = `validation-${q.id}`;
+
+                questionBlock.appendChild(questionText);
+                questionBlock.appendChild(optionsDiv);
+                questionBlock.appendChild(validationMessage);
+
+                quizForm.appendChild(questionBlock);
+            });
+
+            const submitButton = document.createElement('button');
+            submitButton.type = 'submit';
+            submitButton.className = 'submit-btn';
+            submitButton.textContent = 'Submit';
+            quizForm.appendChild(submitButton);
+        }
+
+        // Function to clear the validation message and reset border for a specific question
+        function clearValidationMessage(questionId) {
+            const questionBlock = document.getElementById(`question-block-${questionId}`);
+            questionBlock.classList.remove('unanswered-question');
+            questionBlock.style.borderColor = '#ddd'; // Reset border color
+            const validationMessage = document.getElementById(`validation-${questionId}`);
+            if (validationMessage) {
+                validationMessage.textContent = '';
+            }
+        }
+
+        const quizForm = document.getElementById('quizForm');
+        const resultsDiv = document.getElementById('results');
+
+        quizForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            let score = 0;
+            let allAnswered = true;
+            const totalQuestions = allQuestions.length; // Use the original array length
+
+            // Clear previous results, error messages, and styling
+            resultsDiv.style.display = 'none';
+            resultsDiv.innerHTML = '';
+
+            document.querySelectorAll('.question-block').forEach(qBlock => {
+                // Reset styling for all question blocks
+                qBlock.classList.remove('unanswered-question');
+                qBlock.style.borderColor = '#ddd'; // Reset border color
+                const errorMessage = qBlock.querySelector('.validation-message');
+                if (errorMessage) {
+                    errorMessage.textContent = '';
+                }
+                qBlock.querySelectorAll('label').forEach(label => {
+                    label.classList.remove('correct-label', 'incorrect-label');
+                });
+            });
+
+            // Recreate a mapping of question IDs to their correct answers from the original array
+            const correctAnswersMap = allQuestions.reduce((map, q) => {
+                map[q.id] = q.answer;
+                return map;
+            }, {});
+
+
+            document.querySelectorAll('.question-block').forEach(questionBlock => {
+                // Extract question ID from the question block's ID
+                const questionId = questionBlock.id.replace('question-block-', '');
+                const selectedOption = document.querySelector(`input[name="${questionId}"]:checked`);
+                const validationMessage = document.getElementById(`validation-${questionId}`);
+
+                if (!selectedOption) {
+                    allAnswered = false;
+                    questionBlock.classList.add('unanswered-question');
+                    if (validationMessage) {
+                        validationMessage.textContent = 'Please select an option for this question.';
+                    }
+                } else {
+                    const selectedValue = selectedOption.value;
+                    const correctValue = correctAnswersMap[questionId]; // Use the map for correct answer
+
+                    const labels = questionBlock.querySelectorAll('.options label');
+                    labels.forEach(label => {
+                        const input = label.querySelector('input');
+                        if (input.value === correctValue) {
+                            label.classList.add('correct-label');
+                        } else if (input.checked && input.value !== correctValue) {
+                            label.classList.add('incorrect-label');
+                        }
+                    });
+
+                    if (selectedValue === correctValue) {
+                        score++;
+                    }
+                }
+            });
+
+
+            if (allAnswered) {
+                resultsDiv.innerHTML = `You scored **${score}** out of **${totalQuestions}**!`;
+                resultsDiv.style.display = 'block';
+            }
+        });
+
+        // Initial render of questions when the page loads
+        document.addEventListener('DOMContentLoaded', renderQuestions);
+    </script>
+</body>
+</html>
